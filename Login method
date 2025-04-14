@@ -1,0 +1,85 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.poe_part_1;
+
+import java.util.regex.Pattern;
+
+
+/**
+ *
+ * @author akani
+ */
+public class Login {
+    private String storedUsername; // To store registered username
+    private String storedPassword; // To store registered password
+
+    // Static method to validate username
+    public static boolean checkUserName(String username) {
+        // Checks user name
+        if (username.contains("_") && username.length() <= 5) {
+            System.out.println("Username successfully captured.");
+            return true;
+        } else {
+            System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than five characters in length.");
+            return false;
+        }
+    }
+    // Static method to validate password complexity
+    public static boolean checkPasswordComplexity(String password) {
+        // Check password
+        boolean hasUppercase = !password.equals(password.toLowerCase());
+        boolean hasNumber = password.matches(".*\\d.*");
+        boolean hasSpecialChar = password.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
+        boolean isLongEnough = password.length() >= 8;
+
+        if (hasUppercase && hasNumber && hasSpecialChar && isLongEnough) {
+            System.out.println("Password successfully created.");
+            return true;
+        } else {
+            System.out.println("Password is not correctly formatted; please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.");
+            return false;
+        }
+    }
+
+  // Instance method to validate cell phone number
+    public boolean checkCellPhoneNumber(String cellPhoneNumber) {
+        // Regular expression for South African phone numbers
+        String regex = "^\\+27\\d{9}$";
+        // Check if the input matches the regular expression
+        return Pattern.matches(regex, cellPhoneNumber); }
+
+  // Method to register user
+    public boolean registerUser(String username, String password) {
+        // Validates and registers user if credentials are valid
+        if (!checkUserName(username)) {
+            System.out.println("Registration failed: Username is incorrectly formatted.");
+            return false;
+        }
+        if (!checkPasswordComplexity(password)) {
+            System.out.println("Registration failed: Password does not meet the complexity requirements.");
+            return false;
+        }
+        // Store the user credentials after successful validation
+        this.storedUsername = username;
+        this.storedPassword = password;
+        System.out.println("Registration successful!");
+        return true;
+    }// Method to verify login details
+    public boolean loginUser(String loginUsername, String loginPassword) {
+        if (loginUsername.equals(storedUsername) && loginPassword.equals(storedPassword)) {
+            return true; // Login successful
+        } else {
+            return false; // Login failed
+        }
+    }
+    // Method to return login status message
+    public String returnLoginStatus(boolean isLoginSuccessful) {
+        if (isLoginSuccessful) {
+            return "Login successful. Welcome!";
+        } else {
+            return "Login failed. Incorrect username or password.";
+        }
+    }
+}
